@@ -69,6 +69,8 @@ private fun BeerExperienceEntity.toDomain(): BeerExperience {
         dateRange = dateRange,
         duration = duration,
         category = category,
+        latitude = latitude,
+        longitude = longitude,
         isFavorite = isFavorite,
         amenities = amenities
     )

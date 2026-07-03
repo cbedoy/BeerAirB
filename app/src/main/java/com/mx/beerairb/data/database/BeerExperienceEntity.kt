@@ -18,6 +18,8 @@ data class BeerExperienceEntity(
     val dateRange: String,
     val duration: String,
     val category: String,
+    val latitude: Double,
+    val longitude: Double,
     val isFavorite: Boolean,
     val amenitiesJson: String
 )

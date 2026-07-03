@@ -35,6 +35,8 @@ class DetailScreenScreenshotTest {
         dateRange = "19-21 Oct",
         duration = "5 hrs",
         category = "Hop Farms",
+        latitude = 19.19,
+        longitude = -100.13,
         isFavorite = true,
         amenities = listOf(
             BeerAmenity("Glass", "Cata de bienvenida", 0),

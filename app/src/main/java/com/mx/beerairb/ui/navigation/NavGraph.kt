@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mx.beerairb.BeerAirBApplication
 import com.mx.beerairb.ui.chat.ChatDetailScreen
+import com.mx.beerairb.ui.map.BreweryMapScreen
 import com.mx.beerairb.ui.detail.DetailScreen
 import com.mx.beerairb.ui.detail.DetailViewModelFactory
 import com.mx.beerairb.ui.favorites.FavoritesScreen
@@ -53,6 +54,15 @@ fun NavGraph(navController: NavHostController) {
             MessagesScreen(
                 onChatClick = { chatId ->
                     navController.navigate(Screen.ChatDetail.createRoute(chatId))
+                }
+            )
+        }
+        composable(Screen.Map.route) {
+            BreweryMapScreen(
+                experiences = homeViewModel.experiences.value,
+                onBackClick = { navController.popBackStack() },
+                onExperienceClick = { id ->
+                    navController.navigate(Screen.Detail.createRoute(id))
                 }
             )
         }

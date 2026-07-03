@@ -35,6 +35,8 @@ class HomeScreenScreenshotTest {
         dateRange = "7-12 Oct",
         duration = "2.5 hrs",
         category = "Microbreweries",
+        latitude = 6.32,
+        longitude = 99.85,
         isFavorite = false,
         amenities = listOf(
             BeerAmenity("Glass", "Cata de bienvenida", 0),

@@ -60,7 +60,8 @@ fun MainScaffold() {
         Screen.Home.route,
         Screen.Favorites.route,
         Screen.Messages.route,
-        Screen.Profile.route
+        Screen.Profile.route,
+        Screen.Map.route
     )
 
     Scaffold(
@@ -98,7 +99,11 @@ fun MainScaffold() {
                                     },
                                     label = null,
                                     selected = false,
-                                    onClick = { },
+                                    onClick = {
+                                        navController.navigate(Screen.Map.route) {
+                                            launchSingleTop = true
+                                        }
+                                    },
                                     colors = NavigationBarItemDefaults.colors(
                                         indicatorColor = AmberPrimary
                                     )

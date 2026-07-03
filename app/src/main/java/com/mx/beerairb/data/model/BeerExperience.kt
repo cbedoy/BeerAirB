@@ -14,6 +14,8 @@ data class BeerExperience(
     val dateRange: String,
     val duration: String,
     val category: String,
+    val latitude: Double,
+    val longitude: Double,
     val isFavorite: Boolean,
     val amenities: List<BeerAmenity>
 )
