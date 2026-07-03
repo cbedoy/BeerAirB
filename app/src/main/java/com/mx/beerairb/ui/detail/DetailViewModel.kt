@@ -30,4 +30,10 @@ class DetailViewModel(
             _experience.value = repository.getExperienceById(experienceId)
         }
     }
+
+    fun toggleFavorite(id: String) {
+        _experience.value = _experience.value?.let { exp ->
+            if (exp.id == id) exp.copy(isFavorite = !exp.isFavorite) else exp
+        }
+    }
 }

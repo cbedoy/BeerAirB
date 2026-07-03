@@ -37,15 +37,19 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 ### Composable Structure
 - Screens accept navigation callbacks as lambda parameters
 - `viewModel` parameter has a default of `viewModel()` for testability
-- Composable functions are `@Composable` with `@OptIn(ExperimentalMaterial3Api::class)` where needed
-- Material 3 components: `Scaffold`, `TopAppBar`, `Card`, `Surface`, `Button`, `OutlinedTextField`, `Icon`, `Text`, `CircularProgressIndicator`
-- Layout: `LazyColumn` + `items()`, `Column`, `Row`, `Box`
+- Material 3 components: `Scaffold`, `NavigationBar`, `Card`, `Surface`, `Button`, `OutlinedTextField`, `Icon`, `Text`, `CircularProgressIndicator`
+- Layout: `Column` with `verticalScroll`, `LazyRow` for horizontal sections, `Row`, `Box`
+- Bottom navigation: `MainScaffold` wraps `NavGraph` in a `Scaffold` with `NavigationBar`
+- Home: scrollable `Column` with `SearchBar`, `CategorySelector` (chips), `LazyRow` of `NearbyTaproomCard`, `ExploreBanner`
+- Detail: scrollable `Column` with `HeroImageHeader`, `TitleRatingBlock`, `AmenitiesRow`, `DateSelector`, `BookingBar`
 
 ## Theme
-- `BeerAirBTheme` wraps Material 3 theming with dynamic colors (Android 12+)
-- Fallback: `Purple80`/`Purple40` dark/light color schemes
-- Custom beer-themed colors: `Amber80`, `Amber40`, `DarkBrown`, `WarmBeige`
-- `Typography` uses `FontFamily.Default` with 16sp `bodyLarge`
+- `BeerAirBTheme` uses a fixed brand color scheme (no dynamic color, no dark theme)
+- Primary accent: `AmberPrimary` (#E67E22), background: `CreamBg` (#F9F6F0)
+- Text: `DarkToasted` (#1A1105) for titles, `ClayGray` (#786E64) for secondary
+- Badge colors: `CreamSoft`, `GreenLight`, `GoldPale`, `BlueGray` (pastel tones for amenities)
+- `Typography` uses `FontFamily.SansSerif` styled as Montserrat with full hierarchy
+- Font files expected in `res/font/montserrat.xml`
 
 ## Code Style Rules
 
@@ -66,8 +70,8 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 - Unit tests in `src/test/` (JUnit 4 + Robolectric)
 - Instrumented tests in `src/androidTest/` (AndroidX Test + Espresso + Compose Test)
 - Screenshot tests in `src/test/java/.../screenshot/` using Roborazzi + Robolectric
-  - `HomeScreenScreenshotTest` — captures `ExperienceCard` composable
-  - `DetailScreenScreenshotTest` — captures detail content layout
+  - `HomeScreenScreenshotTest` — captures `NearbyTaproomCard` composable
+  - `DetailScreenScreenshotTest` — captures `DetailContent` composable
 - Record baselines: `./gradlew recordRoborazziDebug`
 - Verify against baselines: `./gradlew verifyRoborazziDebug`
 - Screenshots are stored in `build/outputs/roborazzi/` and copied to `screenshots/` for README
@@ -76,15 +80,18 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 ## Resources
 - Drawables: `ic_beer_1` through `ic_beer_6` in `res/drawable/`
 - Strings: in Spanish, defined in `res/values/strings.xml` and hardcoded in Composables
-- Icons: Material Icons (`Icons.AutoMirrored.Filled.ArrowBack`)
+- Icons: Material Icons (core + extended — `Icons.AutoMirrored.Filled.ArrowBack`, `Icons.Default.Business`, `Icons.Default.Cabin`, `Icons.Default.LocalBar`, `Icons.Default.Nature`, `Icons.Default.ChatBubble`, etc.)
+- Font: `res/font/montserrat.xml` referencing system sans-serif (Montserrat-style)
+- Colors: Defined in `ui/theme/Color.kt` — all amber/golden craft beer palette
 
 ## Common Tasks
 
 ### Adding a new screen
 1. Create ViewModel in `ui/<feature>/` with `StateFlow` state
 2. Create Composable screen function accepting navigation callbacks
-3. Add route to `Screen` sealed class in `NavGraph.kt`
-4. Add `composable()` block in `NavGraph`
+3. Add route entry to `Screen` sealed class in `ui/navigation/Screen.kt`
+4. Add `composable()` block in `ui/navigation/NavGraph.kt`
+5. If it's a bottom nav tab, add `BottomNavItem` entry in `MainScaffold.kt`
 
 ### Adding a new repository
 1. Define interface in `data/repository/`
@@ -104,18 +111,33 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 | `gradle/libs.versions.toml` | Version catalog (single source of truth for versions) |
 | `settings.gradle.kts` | Project settings and repositories |
 | `app/src/main/AndroidManifest.xml` | Manifest |
-| `MainActivity.kt` | Entry point, theme + nav setup |
-| `ui/navigation/NavGraph.kt` | Navigation routes and graph |
+| `MainActivity.kt` | Entry point, sets content to MainScaffold |
+| `ui/navigation/MainScaffold.kt` | Scaffold with bottom navigation bar (5 items) |
+| `ui/navigation/Screen.kt` | Sealed class route definitions |
+| `ui/navigation/NavGraph.kt` | Navigation graph with composable destinations |
 | `data/repository/BeerRepository.kt` | Repository interface |
-| `data/repository/MockBeerRepository.kt` | Mock data (6 experiences) |
-| `data/model/BeerExperience.kt` | Beer experience data model |
-| `ui/home/HomeScreen.kt` | Home list with search |
-| `ui/home/HomeViewModel.kt` | Home state and search logic |
-| `ui/detail/DetailScreen.kt` | Detail view with booking CTA |
-| `ui/detail/DetailViewModel.kt` | Detail state loading |
-| `ui/theme/Color.kt` | Color definitions |
-| `ui/theme/Theme.kt` | Material 3 theme |
-| `ui/theme/Type.kt` | Typography |
+| `data/repository/MockBeerRepository.kt` | Mock data (6 experiences with amenities) |
+| `data/model/BeerExperience.kt` | Beer experience data model (extended fields) |
+| `data/model/BeerAmenity.kt` | Amenity data model |
+| `ui/home/HomeScreen.kt` | Home screen with search, categories, cards, banner |
+| `ui/home/HomeViewModel.kt` | Home state, search, category filter, favorites |
+| `ui/home/SearchBar.kt` | Search text field component |
+| `ui/home/CategorySelector.kt` | Horizontal category chip selector (4 categories) |
+| `ui/home/NearbyTaproomCard.kt` | Experience card with image, distance, dates, fav |
+| `ui/home/ExploreBanner.kt` | Promotional banner with CTA |
+| `ui/detail/DetailScreen.kt` | Detail view with all sections |
+| `ui/detail/DetailViewModel.kt` | Detail state loading with favorites |
+| `ui/detail/HeroImageHeader.kt` | Full-width image with floating back/fav buttons |
+| `ui/detail/TitleRatingBlock.kt` | Title, rating, description with Read More |
+| `ui/detail/AmenitiesRow.kt` | 4 pastel amenity badges |
+| `ui/detail/DateSelector.kt` | Check-in / Check-out date chips (amber) |
+| `ui/detail/BookingBar.kt` | Price display + amber Reserve button |
+| `ui/theme/Color.kt` | Color definitions (amber palette) |
+| `ui/theme/Theme.kt` | Material 3 theme (brand colors, no dynamic) |
+| `ui/theme/Type.kt` | Typography (Montserrat-based) |
+| `ui/favorites/FavoritesScreen.kt` | Placeholder favorites screen |
+| `ui/messages/MessagesScreen.kt` | Placeholder messages screen |
+| `ui/profile/ProfileScreen.kt` | Placeholder profile screen |
 
 ## Git Notes
 

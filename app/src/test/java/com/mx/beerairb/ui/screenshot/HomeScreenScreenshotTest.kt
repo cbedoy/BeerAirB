@@ -3,13 +3,14 @@ package com.mx.beerairb.ui.screenshot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.robolectric.annotation.Config
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.mx.beerairb.data.model.BeerAmenity
 import com.mx.beerairb.data.model.BeerExperience
-import com.mx.beerairb.ui.home.ExperienceCard
+import com.mx.beerairb.ui.home.NearbyTaproomCard
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(AndroidJUnit4::class)
@@ -22,23 +23,32 @@ class HomeScreenScreenshotTest {
 
     private val mockExperience = BeerExperience(
         id = "1",
-        title = "Cervecería Chapultepec",
+        title = "Langkawi Craft Brewery",
         hostName = "Carlos Mendoza",
         description = "Disfruta de un recorrido exclusivo por nuestra cervecería artesanal.",
         pricePerPerson = 450.0,
         rating = 4.8,
+        reviewCount = 304,
         imageRes = 0,
-        location = "Chapultepec, CDMX",
+        location = "Langkawi, Malaysia",
+        distanceKm = 3446.0,
+        dateRange = "7-12 Oct",
         duration = "2.5 hrs",
-        category = "Recorrido"
+        category = "Microbreweries",
+        isFavorite = false,
+        amenities = listOf(
+            BeerAmenity("Glass", "Cata de bienvenida", 0),
+            BeerAmenity("Keg", "Grifo propio", 1)
+        )
     )
 
     @Test
-    fun experienceCard() {
+    fun nearbyTaproomCard() {
         composeTestRule.setContent {
-            ExperienceCard(
+            NearbyTaproomCard(
                 experience = mockExperience,
-                onClick = {}
+                onClick = {},
+                onFavoriteToggle = {}
             )
         }
         composeTestRule.onRoot().captureRoboImage()

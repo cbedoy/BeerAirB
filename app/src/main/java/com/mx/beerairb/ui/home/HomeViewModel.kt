@@ -23,6 +23,9 @@ class HomeViewModel(
     private val _filteredExperiences = MutableStateFlow<List<BeerExperience>>(emptyList())
     val filteredExperiences: StateFlow<List<BeerExperience>> = _filteredExperiences.asStateFlow()
 
+    private val _selectedCategory = MutableStateFlow<String?>(null)
+    val selectedCategory: StateFlow<String?> = _selectedCategory.asStateFlow()
+
     init {
         loadExperiences()
     }
@@ -37,15 +40,32 @@ class HomeViewModel(
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
-        _filteredExperiences.value = if (query.isBlank()) {
-            _experiences.value
-        } else {
-            _experiences.value.filter { experience ->
-                experience.title.contains(query, ignoreCase = true) ||
-                    experience.location.contains(query, ignoreCase = true) ||
-                    experience.category.contains(query, ignoreCase = true) ||
-                    experience.hostName.contains(query, ignoreCase = true)
-            }
+        applyFilters()
+    }
+
+    fun onCategorySelected(category: String) {
+        _selectedCategory.value = if (_selectedCategory.value == category) null else category
+        applyFilters()
+    }
+
+    fun onFavoriteToggle(id: String) {
+        _experiences.value = _experiences.value.map { exp ->
+            if (exp.id == id) exp.copy(isFavorite = !exp.isFavorite) else exp
+        }
+        applyFilters()
+    }
+
+    private fun applyFilters() {
+        val query = _searchQuery.value
+        val category = _selectedCategory.value
+        _filteredExperiences.value = _experiences.value.filter { exp ->
+            val matchesQuery = query.isBlank() ||
+                exp.title.contains(query, ignoreCase = true) ||
+                exp.location.contains(query, ignoreCase = true) ||
+                exp.category.contains(query, ignoreCase = true) ||
+                exp.hostName.contains(query, ignoreCase = true)
+            val matchesCategory = category == null || exp.category == category
+            matchesQuery && matchesCategory
         }
     }
 }

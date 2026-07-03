@@ -1,6 +1,6 @@
 # BeerAirB 🍺
 
-**Version 0.0.1**
+**Version 0.1.0**
 
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
 
@@ -22,12 +22,13 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 | Component | Technology |
 |-----------|------------|
 | Language | Kotlin 2.2.10 |
-| UI | Jetpack Compose + Material 3 |
+| UI | Jetpack Compose + Material 3 + Montserrat |
 | Architecture | MVVM + Repository |
 | Navigation | Navigation Compose 2.9.0 |
 | State Management | StateFlow + collectAsState() |
 | Screenshot Testing | Roborazzi + Robolectric |
 | DI | Manual constructor injection |
+| Color Palette | Amber craft beer theme |
 | Min SDK | 24 |
 | Target SDK | 37 |
 | Build | Gradle 9.3.1 + AGP 9.1.1 |
@@ -58,18 +59,38 @@ com.mx.beerairb/
 ├── MainActivity.kt              # Entry point
 ├── data/
 │   ├── model/
-│   │   └── BeerExperience.kt    # Data model
+│   │   ├── BeerExperience.kt    # Data model
+│   │   └── BeerAmenity.kt       # Amenity model
 │   └── repository/
 │       ├── BeerRepository.kt    # Repository interface
 │       └── MockBeerRepository.kt # Mock data (6 experiences)
 └── ui/
-    ├── home/                    # Home list + search
-    ├── detail/                  # Experience detail
-    ├── navigation/              # NavGraph + routes
+    ├── home/                    # Home list, search, categories, cards, banner
+    ├── detail/                  # Hero, title, amenities, dates, booking
+    ├── navigation/              # NavGraph, routes, MainScaffold
+    ├── favorites/               # Favorites placeholder screen
+    ├── messages/                # Messages placeholder screen
+    ├── profile/                 # Profile placeholder screen
     └── theme/                   # Colors, typography, theme
 ```
 
 ## Changelog
+
+### 0.1.0 (2026-07-03)
+Design system overhaul and complete UI restructure:
+
+- **feat**: Amber/golden craft beer color palette (#E67E22 primary, cream bg, toasted text)
+- **feat**: Montserrat font family throughout all typography
+- **feat**: Custom Material 3 color scheme with brand consistency (no dynamic color)
+- **feat**: BeerAmenity model, enhanced BeerExperience with distance/dateRange/reviewCount/amenities/isFavorite
+- **feat**: Bottom navigation bar with 5 items (Home, Favorites, Beer FAB, Messages, Profile)
+- **feat**: Home screen redesigned with SearchBar, CategorySelector (horizontal chips), NearbyTaproomCard (horizontal scroll), and ExploreBanner
+- **feat**: Detail screen redesigned with HeroImageHeader, TitleRatingBlock, AmenitiesRow (4 pastel badges), DateSelector, and BookingBar
+- **feat**: Category filtering and favorite toggling in HomeViewModel
+- **feat**: Favorites, Messages, and Profile placeholder screens
+- **feat**: `material-icons-extended` dependency for business, cabin, nature, chat icons
+- **docs**: Updated README with v0.1.0 changelog and new tech stack
+- **test**: Updated Roborazzi screenshot tests for new composables
 
 ### 0.0.1 (2026-07-03)
 

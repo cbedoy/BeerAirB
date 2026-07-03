@@ -1,27 +1,12 @@
 package com.mx.beerairb.ui.screenshot
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.mx.beerairb.data.model.BeerAmenity
 import com.mx.beerairb.data.model.BeerExperience
+import com.mx.beerairb.ui.detail.DetailContent
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,53 +28,26 @@ class DetailScreenScreenshotTest {
         description = "Visita a una granja cervecera en el Valle de México. Conoce el cultivo del lúpulo, el proceso de fermentación artesanal y termina con una comida campestre con maridaje.",
         pricePerPerson = 650.0,
         rating = 4.9,
+        reviewCount = 157,
         imageRes = 0,
         location = "Valle de Bravo, Méx",
+        distanceKm = 156.0,
+        dateRange = "19-21 Oct",
         duration = "5 hrs",
-        category = "Recorrido"
+        category = "Hop Farms",
+        isFavorite = true,
+        amenities = listOf(
+            BeerAmenity("Glass", "Cata de bienvenida", 0),
+            BeerAmenity("Keg", "Grifo propio", 1),
+            BeerAmenity("Bed", "Hospedaje incluido", 2),
+            BeerAmenity("Wifi", "WiFi / Pet Friendly", 3)
+        )
     )
-
-    @Composable
-    private fun MockDetailContent(experience: BeerExperience) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(260.dp),
-                color = MaterialTheme.colorScheme.primaryContainer
-            ) {
-                androidx.compose.foundation.layout.Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("🍺", style = MaterialTheme.typography.displayLarge)
-                }
-            }
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(experience.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text("★ ${experience.rating}", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-                Text(experience.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Card(
-                    modifier = Modifier.height(36.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                ) {
-                    Text(experience.category, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp))
-                }
-                Text("Anfitrión: ${experience.hostName}", style = MaterialTheme.typography.titleSmall)
-                Text(experience.description, style = MaterialTheme.typography.bodyLarge)
-            }
-        }
-    }
 
     @Test
     fun detailContent() {
         composeTestRule.setContent {
-            MockDetailContent(experience = mockExperience)
+            DetailContent(experience = mockExperience)
         }
         composeTestRule.onRoot().captureRoboImage()
     }

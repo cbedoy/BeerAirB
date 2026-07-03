@@ -7,14 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mx.beerairb.ui.detail.DetailScreen
+import com.mx.beerairb.ui.favorites.FavoritesScreen
 import com.mx.beerairb.ui.home.HomeScreen
-
-sealed class Screen(val route: String) {
-    data object Home : Screen("home")
-    data object Detail : Screen("detail/{id}") {
-        fun createRoute(id: String) = "detail/$id"
-    }
-}
+import com.mx.beerairb.ui.messages.MessagesScreen
+import com.mx.beerairb.ui.profile.ProfileScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -25,6 +21,15 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(Screen.Detail.createRoute(id))
                 }
             )
+        }
+        composable(Screen.Favorites.route) {
+            FavoritesScreen()
+        }
+        composable(Screen.Messages.route) {
+            MessagesScreen()
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen()
         }
         composable(
             route = Screen.Detail.route,
