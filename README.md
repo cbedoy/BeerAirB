@@ -1,6 +1,6 @@
 # BeerAirB 🍺
 
-**Version 0.2.0**
+**Version 0.2.2**
 
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
 
@@ -86,6 +86,18 @@ com.mx.beerairb/
 
 ## Changelog
 
+### 0.2.2 (2026-07-03)
+Fix DetailViewModel crash on navigation:
+
+- **fix**: Remove `SavedStateHandle` dependency from `DetailViewModel`
+- **fix**: Add `DetailViewModelFactory` (ViewModelProvider.Factory) for controlled instantiation
+- **fix**: Move ViewModel creation to `NavGraph` composable block with explicit factory
+
+### 0.2.1 (2026-07-03)
+Fix crash navigating to detail screen:
+
+- **fix**: Pass `backStackEntry` as ViewModelStoreOwner to `viewModel()` call
+
 ### 0.2.0 (2026-07-03)
 Replace emoji placeholders with real images from Unsplash:
 
@@ -101,7 +113,6 @@ Replace emoji placeholders with real images from Unsplash:
 Design system overhaul and complete UI restructure:
 
 - Screenshots versioned under `screenshots/v0.1.0/`
-
 - **feat**: Amber/golden craft beer color palette (#E67E22 primary, cream bg, toasted text)
 - **feat**: Montserrat font family throughout all typography
 - **feat**: Custom Material 3 color scheme with brand consistency (no dynamic color)
@@ -114,6 +125,12 @@ Design system overhaul and complete UI restructure:
 - **feat**: `material-icons-extended` dependency for business, cabin, nature, chat icons
 - **docs**: Updated README with v0.1.0 changelog and new tech stack
 - **test**: Updated Roborazzi screenshot tests for new composables
+
+### 0.0.2 (2026-07-03)
+Add versioning and tagging workflow documentation:
+
+- **docs**: Add semantic versioning rules to AGENTS.md and CLAUDE.md
+- **docs**: Document tag format and `git push --tags` instructions
 
 ### 0.0.1 (2026-07-03)
 
