@@ -1,6 +1,6 @@
 # BeerAirB 🍺
 
-**Version 0.2.2**
+**Version 0.3.0**
 
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
 
@@ -8,11 +8,11 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 
 Screenshots are organized by version in `screenshots/`. Each tagged release has its own subdirectory.
 
-### v0.2.0 (current)
+### v0.3.0 (current)
 
 | Home Card | Detail Content |
 |-----------|----------------|
-| ![Home Card v0.2.0](screenshots/v0.2.0/home-card.png) | ![Detail Content v0.2.0](screenshots/v0.2.0/detail-content.png) |
+| ![Home Card v0.3.0](screenshots/v0.3.0/home-card.png) | ![Detail Content v0.3.0](screenshots/v0.3.0/detail-content.png) |
 
 ### v0.0.1
 
@@ -85,6 +85,16 @@ com.mx.beerairb/
 ```
 
 ## Changelog
+
+### 0.3.0 (2026-07-03)
+Detail screen parallax collapsing header, navigation animations, and alignment polish:
+
+- **feat**: Parallax collapsing header on detail scroll (hero shrinks from 300dp to 120dp)
+- **feat**: Enter/exit navigation transitions on Detail route (slide + fade)
+- **feat**: HeroImageHeader scale-in + fade-in entrance animation
+- **feat**: NearbyTaproomCard bounce-press feedback (scales to 0.97 on press)
+- **style**: Consistent 24dp horizontal padding across all detail sections
+- **test**: Updated screenshot baselines for v0.3.0
 
 ### 0.2.2 (2026-07-03)
 Fix DetailViewModel crash on navigation:

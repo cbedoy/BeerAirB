@@ -1,5 +1,10 @@
 package com.mx.beerairb.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -38,7 +43,19 @@ fun NavGraph(navController: NavHostController) {
             route = Screen.Detail.route,
             arguments = listOf(
                 navArgument("id") { type = NavType.StringType }
-            )
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it / 3 },
+                    animationSpec = tween(200)
+                ) + fadeOut(animationSpec = tween(200))
+            }
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: return@composable
             val viewModel: DetailViewModel = viewModel(

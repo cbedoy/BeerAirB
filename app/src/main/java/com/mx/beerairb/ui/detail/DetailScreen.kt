@@ -1,5 +1,6 @@
 package com.mx.beerairb.ui.detail
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,16 +9,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mx.beerairb.data.model.BeerExperience
+
+private const val MAX_HEADER_HEIGHT = 300f
+private const val MIN_HEADER_HEIGHT = 120f
+private const val COLLAPSE_RANGE = MAX_HEADER_HEIGHT - MIN_HEADER_HEIGHT
 
 @Composable
 fun DetailScreen(
@@ -28,10 +40,9 @@ fun DetailScreen(
     val experience by viewModel.experience.collectAsState()
 
     if (experience == null) {
-        Column(
+        Box(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+            contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
@@ -51,33 +62,78 @@ fun DetailContent(
     onFavoriteToggle: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        HeroImageHeader(
-            imageUrl = experience.imageUrl,
-            onBackClick = onBackClick,
-            isFavorite = experience.isFavorite,
-            onFavoriteToggle = onFavoriteToggle
-        )
+    var headerHeightPx by remember { mutableFloatStateOf(MAX_HEADER_HEIGHT) }
+    val density = LocalDensity.current
 
-        TitleRatingBlock(
-            title = experience.title,
-            rating = experience.rating,
-            reviewCount = experience.reviewCount,
-            description = experience.description
-        )
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val delta = -available.y
+                val newHeight = (headerHeightPx + delta).coerceIn(
+                    MIN_HEADER_HEIGHT,
+                    MAX_HEADER_HEIGHT
+                )
+                val consumed = newHeight - headerHeightPx
+                if (consumed != 0f) {
+                    headerHeightPx = newHeight
+                    return Offset(0f, -consumed)
+                }
+                return Offset.Zero
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                val midPoint = (MAX_HEADER_HEIGHT + MIN_HEADER_HEIGHT) / 2f
+                headerHeightPx = if (headerHeightPx > midPoint) MAX_HEADER_HEIGHT else MIN_HEADER_HEIGHT
+                return Velocity.Zero
+            }
+        }
+    }
 
-        AmenitiesRow(amenities = experience.amenities)
+    val headerHeightDp = with(density) { headerHeightPx.toDp() }
+    val parallaxOffset = with(density) {
+        ((headerHeightPx - MIN_HEADER_HEIGHT) * 0.3f).toDp()
+    }
 
-        DateSelector()
+    Box(modifier = modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(headerHeightDp)
+        ) {
+            HeroImageHeader(
+                imageUrl = experience.imageUrl,
+                onBackClick = onBackClick,
+                isFavorite = experience.isFavorite,
+                onFavoriteToggle = onFavoriteToggle,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
 
-        BookingBar(price = experience.pricePerPerson)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .nestedScroll(nestedScrollConnection)
+        ) {
+            Spacer(modifier = Modifier.height(headerHeightDp - parallaxOffset))
 
-        Spacer(modifier = Modifier.height(32.dp))
+            TitleRatingBlock(
+                title = experience.title,
+                rating = experience.rating,
+                reviewCount = experience.reviewCount,
+                description = experience.description
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            AmenitiesRow(amenities = experience.amenities)
+
+            DateSelector()
+
+            BookingBar(price = experience.pricePerPerson)
+
+            Spacer(modifier = Modifier.height(32.dp))
+        }
     }
 }

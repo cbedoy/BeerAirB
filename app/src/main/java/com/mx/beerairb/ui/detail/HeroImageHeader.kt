@@ -1,9 +1,11 @@
 package com.mx.beerairb.ui.detail
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -35,15 +37,24 @@ fun HeroImageHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp)
     ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
+        androidx.compose.animation.AnimatedVisibility(
+            visible = true,
+            enter = scaleIn(
+                animationSpec = tween(400, delayMillis = 50),
+                initialScale = 0.85f
+            ) + fadeIn(animationSpec = tween(300))
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
 
         IconButton(
             onClick = onBackClick,

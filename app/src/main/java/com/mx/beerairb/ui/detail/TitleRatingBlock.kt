@@ -27,7 +27,7 @@ fun TitleRatingBlock(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 24.dp)
     ) {
         Text(
             text = title,
