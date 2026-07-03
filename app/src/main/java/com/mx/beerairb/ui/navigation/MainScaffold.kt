@@ -1,6 +1,8 @@
 package com.mx.beerairb.ui.navigation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -127,6 +129,12 @@ fun MainScaffold() {
             }
         }
     ) { paddingValues ->
-        NavGraph(navController = navController)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            NavGraph(navController = navController)
+        }
     }
 }
