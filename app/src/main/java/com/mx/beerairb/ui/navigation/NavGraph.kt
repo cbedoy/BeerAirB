@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mx.beerairb.ui.detail.DetailScreen
 import com.mx.beerairb.ui.detail.DetailViewModel
+import com.mx.beerairb.ui.detail.DetailViewModelFactory
 import com.mx.beerairb.ui.favorites.FavoritesScreen
 import com.mx.beerairb.ui.home.HomeScreen
 import com.mx.beerairb.ui.messages.MessagesScreen
@@ -40,7 +41,9 @@ fun NavGraph(navController: NavHostController) {
             )
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: return@composable
-            val viewModel: DetailViewModel = viewModel(backStackEntry)
+            val viewModel: DetailViewModel = viewModel(
+                factory = DetailViewModelFactory(id)
+            )
             DetailScreen(
                 experienceId = id,
                 onBackClick = { navController.popBackStack() },

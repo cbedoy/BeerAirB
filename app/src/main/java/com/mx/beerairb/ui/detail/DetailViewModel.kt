@@ -1,6 +1,5 @@
 package com.mx.beerairb.ui.detail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.beerairb.data.model.BeerExperience
@@ -12,11 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val experienceId: String = "",
     private val repository: BeerRepository = MockBeerRepository()
 ) : ViewModel() {
-
-    private val experienceId: String = savedStateHandle.get<String>("id") ?: ""
 
     private val _experience = MutableStateFlow<BeerExperience?>(null)
     val experience: StateFlow<BeerExperience?> = _experience.asStateFlow()
