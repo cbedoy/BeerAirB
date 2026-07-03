@@ -34,6 +34,13 @@ fun HomeScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        Text(
+            text = "Home",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
         SearchBar(
             query = searchQuery,
             onQueryChanged = viewModel::onSearchQueryChanged
