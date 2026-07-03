@@ -74,7 +74,8 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
   - `DetailScreenScreenshotTest` — captures `DetailContent` composable
 - Record baselines: `./gradlew recordRoborazziDebug`
 - Verify against baselines: `./gradlew verifyRoborazziDebug`
-- Screenshots are stored in `build/outputs/roborazzi/` and copied to `screenshots/` for README
+- Screenshots are stored in `build/outputs/roborazzi/` and copied to `screenshots/v<version>/` for README
+- Screenshots directory is organized by version tag: `screenshots/v0.0.1/`, `screenshots/v0.1.0/`, etc.
 - `@GraphicsMode(GraphicsMode.Mode.NATIVE)` and `@Config(sdk = [34])` required on test classes
 
 ## Resources

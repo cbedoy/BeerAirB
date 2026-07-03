@@ -6,9 +6,19 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 
 ## Screenshots
 
+Screenshots are organized by version in `screenshots/`. Each tagged release has its own subdirectory.
+
+### v0.1.0 (current)
+
 | Home Card | Detail Content |
 |-----------|----------------|
-| ![Home Card](screenshots/home-card.png) | ![Detail Content](screenshots/detail-content.png) |
+| ![Home Card v0.1.0](screenshots/v0.1.0/home-card.png) | ![Detail Content v0.1.0](screenshots/v0.1.0/detail-content.png) |
+
+### v0.0.1
+
+| Home Card | Detail Content |
+|-----------|----------------|
+| ![Home Card v0.0.1](screenshots/v0.0.1/home-card.png) | ![Detail Content v0.0.1](screenshots/v0.0.1/detail-content.png) |
 
 ## Features
 
@@ -79,6 +89,8 @@ com.mx.beerairb/
 ### 0.1.0 (2026-07-03)
 Design system overhaul and complete UI restructure:
 
+- Screenshots versioned under `screenshots/v0.1.0/`
+
 - **feat**: Amber/golden craft beer color palette (#E67E22 primary, cream bg, toasted text)
 - **feat**: Montserrat font family throughout all typography
 - **feat**: Custom Material 3 color scheme with brand consistency (no dynamic color)
@@ -96,6 +108,7 @@ Design system overhaul and complete UI restructure:
 
 Initial release. Core MVP with:
 
+- Screenshots versioned under `screenshots/v0.0.1/`
 - **feat**: BeerExperience model + repository layer
 - **feat**: Navigation graph with sealed class routes (Home, Detail)
 - **feat**: Home screen with search bar and experience list
