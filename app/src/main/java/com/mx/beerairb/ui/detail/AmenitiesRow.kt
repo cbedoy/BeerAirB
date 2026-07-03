@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mx.beerairb.data.model.BeerAmenity
 import com.mx.beerairb.ui.theme.BlueGray
@@ -41,9 +41,10 @@ fun AmenitiesRow(
         Text(
             text = "Including",
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -53,21 +54,21 @@ fun AmenitiesRow(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Surface(
-                        modifier = Modifier.size(56.dp),
-                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.size(64.dp),
+                        shape = RoundedCornerShape(18.dp),
                         color = badgeColors.getOrElse(amenity.badgeColorIndex) { BlueGray }
                     ) {
                         Text(
                             text = iconChars.getOrElse(index) { "\uD83C\uDF7A" },
-                            modifier = Modifier.padding(12.dp),
-                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(14.dp),
+                            style = MaterialTheme.typography.headlineSmall,
                             textAlign = TextAlign.Center
                         )
                     }
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = amenity.label,
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                         maxLines = 2

@@ -21,15 +21,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mx.beerairb.data.model.BeerExperience
-
-private const val MAX_HEADER_HEIGHT = 300f
-private const val MIN_HEADER_HEIGHT = 120f
-private const val COLLAPSE_RANGE = MAX_HEADER_HEIGHT - MIN_HEADER_HEIGHT
 
 @Composable
 fun DetailScreen(
@@ -55,6 +50,9 @@ fun DetailScreen(
     }
 }
 
+private const val MAX_HEADER_DP = 300f
+private const val MIN_HEADER_DP = 120f
+
 @Composable
 fun DetailContent(
     experience: BeerExperience,
@@ -62,51 +60,45 @@ fun DetailContent(
     onFavoriteToggle: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    var headerHeightPx by remember { mutableFloatStateOf(MAX_HEADER_HEIGHT) }
-    val density = LocalDensity.current
+    var headerHeightDp by remember { mutableFloatStateOf(MAX_HEADER_DP) }
+    val density = androidx.compose.ui.platform.LocalDensity.current
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = -available.y
-                val newHeight = (headerHeightPx + delta).coerceIn(
-                    MIN_HEADER_HEIGHT,
-                    MAX_HEADER_HEIGHT
-                )
-                val consumed = newHeight - headerHeightPx
-                if (consumed != 0f) {
-                    headerHeightPx = newHeight
-                    return Offset(0f, -consumed)
+                val deltaDp = with(density) { delta.toDp() }.value
+                val newHeight = (headerHeightDp + deltaDp).coerceIn(MIN_HEADER_DP, MAX_HEADER_DP)
+                val consumedDp = newHeight - headerHeightDp
+                if (consumedDp != 0f) {
+                    headerHeightDp = newHeight
+                    return Offset(0f, -available.y)
                 }
                 return Offset.Zero
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
-                val midPoint = (MAX_HEADER_HEIGHT + MIN_HEADER_HEIGHT) / 2f
-                headerHeightPx = if (headerHeightPx > midPoint) MAX_HEADER_HEIGHT else MIN_HEADER_HEIGHT
+                val midPoint = (MAX_HEADER_DP + MIN_HEADER_DP) / 2f
+                headerHeightDp = if (headerHeightDp > midPoint) MAX_HEADER_DP else MIN_HEADER_DP
                 return Velocity.Zero
             }
         }
     }
 
-    val headerHeightDp = with(density) { headerHeightPx.toDp() }
-    val parallaxOffset = with(density) {
-        ((headerHeightPx - MIN_HEADER_HEIGHT) * 0.3f).toDp()
-    }
+    val parallaxOffset = ((headerHeightDp - MIN_HEADER_DP) * 0.3f).dp
 
     Box(modifier = modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(headerHeightDp)
+                .height(headerHeightDp.dp)
         ) {
             HeroImageHeader(
                 imageUrl = experience.imageUrl,
                 onBackClick = onBackClick,
                 isFavorite = experience.isFavorite,
                 onFavoriteToggle = onFavoriteToggle,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -116,7 +108,7 @@ fun DetailContent(
                 .verticalScroll(rememberScrollState())
                 .nestedScroll(nestedScrollConnection)
         ) {
-            Spacer(modifier = Modifier.height(headerHeightDp - parallaxOffset))
+            Spacer(modifier = Modifier.height(headerHeightDp.dp - parallaxOffset))
 
             TitleRatingBlock(
                 title = experience.title,
@@ -125,15 +117,19 @@ fun DetailContent(
                 description = experience.description
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             AmenitiesRow(amenities = experience.amenities)
 
+            Spacer(modifier = Modifier.height(24.dp))
+
             DateSelector()
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             BookingBar(price = experience.pricePerPerson)
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }

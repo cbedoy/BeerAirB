@@ -1,6 +1,6 @@
 # BeerAirB 🍺
 
-**Version 0.3.0**
+**Version 0.3.1**
 
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
 
@@ -8,11 +8,11 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 
 Screenshots are organized by version in `screenshots/`. Each tagged release has its own subdirectory.
 
-### v0.3.0 (current)
+### v0.3.1 (current)
 
 | Home Card | Detail Content |
 |-----------|----------------|
-| ![Home Card v0.3.0](screenshots/v0.3.0/home-card.png) | ![Detail Content v0.3.0](screenshots/v0.3.0/detail-content.png) |
+| ![Home Card v0.3.1](screenshots/v0.3.1/home-card.png) | ![Detail Content v0.3.1](screenshots/v0.3.1/detail-content.png) |
 
 ### v0.0.1
 
@@ -85,6 +85,17 @@ com.mx.beerairb/
 ```
 
 ## Changelog
+
+### 0.3.1 (2026-07-03)
+Fix parallax header rendering, increase spacing and font sizes:
+
+- **fix**: Header now starts at full 300dp (was 300px ~ 100dp due to pixel/dp confusion)
+- **fix**: Use dp-based height state instead of px, avoiding density calculation bugs
+- **style**: Title uses headlineLarge with more vertical spacing
+- **style**: Amenity badges increased from 56dp to 64dp with larger icons
+- **style**: Date selector cards use titleLarge dates with 20dp padding
+- **style**: Booking price uses headlineSmall, more spacing between sections (24dp)
+- **style**: Increased bottom spacer from 32dp to 48dp for better scroll feel
 
 ### 0.3.0 (2026-07-03)
 Detail screen parallax collapsing header, navigation animations, and alignment polish:

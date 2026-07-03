@@ -29,30 +29,33 @@ fun TitleRatingBlock(
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Row {
             Text(
-                text = "$rating ⭐ $reviewCount Reviews de otros beer lovers",
-                style = MaterialTheme.typography.bodyMedium,
+                text = "$rating ⭐ $reviewCount reviews",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
                 color = ClayGray
             )
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = description,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 4
+            maxLines = 5,
+            lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
         )
         TextButton(onClick = { }) {
             Text(
-                text = "Read More...",
+                text = "Read more...",
                 color = AmberPrimary,
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold
