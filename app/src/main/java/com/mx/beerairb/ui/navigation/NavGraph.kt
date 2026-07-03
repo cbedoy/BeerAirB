@@ -18,6 +18,7 @@ import com.mx.beerairb.ui.chat.ChatDetailScreen
 import com.mx.beerairb.ui.detail.DetailScreen
 import com.mx.beerairb.ui.detail.DetailViewModelFactory
 import com.mx.beerairb.ui.favorites.FavoritesScreen
+import com.mx.beerairb.ui.favorites.FavoritesViewModelFactory
 import com.mx.beerairb.ui.home.HomeScreen
 import com.mx.beerairb.ui.home.HomeViewModelFactory
 import com.mx.beerairb.ui.messages.MessagesScreen
@@ -38,7 +39,15 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(Screen.Favorites.route) {
-            FavoritesScreen()
+            val favViewModel: com.mx.beerairb.ui.favorites.FavoritesViewModel = viewModel(
+                factory = FavoritesViewModelFactory(app)
+            )
+            FavoritesScreen(
+                onExperienceClick = { id ->
+                    navController.navigate(Screen.Detail.createRoute(id))
+                },
+                viewModel = favViewModel
+            )
         }
         composable(Screen.Messages.route) {
             MessagesScreen(

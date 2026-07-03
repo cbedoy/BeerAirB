@@ -25,6 +25,12 @@ class RoomBeerRepository(
         return dao.getExperienceById(id).map { it?.toDomain() }
     }
 
+    override fun getFavoriteExperiences(): Flow<List<BeerExperience>> {
+        return dao.getFavoriteExperiences().map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
     override suspend fun toggleFavorite(id: String, isFavorite: Boolean) {
         dao.updateFavorite(id, isFavorite)
     }

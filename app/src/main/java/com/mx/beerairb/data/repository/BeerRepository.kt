@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface BeerRepository {
     fun getAllExperiences(): Flow<List<BeerExperience>>
     fun getExperienceById(id: String): Flow<BeerExperience?>
+    fun getFavoriteExperiences(): Flow<List<BeerExperience>>
     suspend fun toggleFavorite(id: String, isFavorite: Boolean)
 }

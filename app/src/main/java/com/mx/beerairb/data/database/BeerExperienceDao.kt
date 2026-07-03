@@ -15,6 +15,9 @@ interface BeerExperienceDao {
     @Query("SELECT * FROM beer_experiences WHERE id = :id")
     fun getExperienceById(id: String): Flow<BeerExperienceEntity?>
 
+    @Query("SELECT * FROM beer_experiences WHERE isFavorite = 1 ORDER BY distanceKm ASC")
+    fun getFavoriteExperiences(): Flow<List<BeerExperienceEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(experiences: List<BeerExperienceEntity>)
 
