@@ -8,7 +8,7 @@ data class BeerExperience(
     val pricePerPerson: Double,
     val rating: Double,
     val reviewCount: Int,
-    val imageRes: Int,
+    val imageUrl: String,
     val location: String,
     val distanceKm: Double,
     val dateRange: String,

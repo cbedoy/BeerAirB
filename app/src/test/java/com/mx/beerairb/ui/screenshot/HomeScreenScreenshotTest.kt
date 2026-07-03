@@ -29,7 +29,7 @@ class HomeScreenScreenshotTest {
         pricePerPerson = 450.0,
         rating = 4.8,
         reviewCount = 304,
-        imageRes = 0,
+        imageUrl = "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=600&h=400&fit=crop",
         location = "Langkawi, Malaysia",
         distanceKm = 3446.0,
         dateRange = "7-12 Oct",

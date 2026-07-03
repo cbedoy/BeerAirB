@@ -1,6 +1,5 @@
 package com.mx.beerairb.data.repository
 
-import com.mx.beerairb.R
 import com.mx.beerairb.data.model.BeerAmenity
 import com.mx.beerairb.data.model.BeerExperience
 
@@ -15,7 +14,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 450.0,
             rating = 4.8,
             reviewCount = 304,
-            imageRes = R.drawable.ic_beer_1,
+            imageUrl = "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=600&h=400&fit=crop",
             location = "Langkawi, Malaysia",
             distanceKm = 3446.0,
             dateRange = "7-12 Oct",
@@ -37,7 +36,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 350.0,
             rating = 4.6,
             reviewCount = 218,
-            imageRes = R.drawable.ic_beer_2,
+            imageUrl = "https://images.unsplash.com/photo-1571746867546-4bb4b9b0a7b2?w=600&h=400&fit=crop",
             location = "Condesa, CDMX",
             distanceKm = 3.2,
             dateRange = "12-15 Oct",
@@ -58,7 +57,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 650.0,
             rating = 4.9,
             reviewCount = 157,
-            imageRes = R.drawable.ic_beer_3,
+            imageUrl = "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&h=400&fit=crop",
             location = "Valle de Bravo, Méx",
             distanceKm = 156.0,
             dateRange = "19-21 Oct",
@@ -79,7 +78,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 280.0,
             rating = 4.4,
             reviewCount = 432,
-            imageRes = R.drawable.ic_beer_4,
+            imageUrl = "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&h=400&fit=crop",
             location = "Roma Norte, CDMX",
             distanceKm = 1.8,
             dateRange = "14-16 Oct",
@@ -100,7 +99,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 890.0,
             rating = 4.7,
             reviewCount = 89,
-            imageRes = R.drawable.ic_beer_5,
+            imageUrl = "https://images.unsplash.com/photo-1586999768265-24af89630739?w=600&h=400&fit=crop",
             location = "Coyoacán, CDMX",
             distanceKm = 12.5,
             dateRange = "26-28 Oct",
@@ -121,7 +120,7 @@ class MockBeerRepository : BeerRepository {
             pricePerPerson = 520.0,
             rating = 4.5,
             reviewCount = 276,
-            imageRes = R.drawable.ic_beer_6,
+            imageUrl = "https://images.unsplash.com/photo-1518173946687-a36f968f7e1c?w=600&h=400&fit=crop",
             location = "Juárez, CDMX",
             distanceKm = 2.1,
             dateRange = "5-8 Nov",

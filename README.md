@@ -1,6 +1,6 @@
 # BeerAirB 🍺
 
-**Version 0.1.0**
+**Version 0.2.0**
 
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
 
@@ -8,11 +8,11 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 
 Screenshots are organized by version in `screenshots/`. Each tagged release has its own subdirectory.
 
-### v0.1.0 (current)
+### v0.2.0 (current)
 
 | Home Card | Detail Content |
 |-----------|----------------|
-| ![Home Card v0.1.0](screenshots/v0.1.0/home-card.png) | ![Detail Content v0.1.0](screenshots/v0.1.0/detail-content.png) |
+| ![Home Card v0.2.0](screenshots/v0.2.0/home-card.png) | ![Detail Content v0.2.0](screenshots/v0.2.0/detail-content.png) |
 
 ### v0.0.1
 
@@ -85,6 +85,17 @@ com.mx.beerairb/
 ```
 
 ## Changelog
+
+### 0.2.0 (2026-07-03)
+Replace emoji placeholders with real images from Unsplash:
+
+- **feat**: Replace `imageRes: Int` with `imageUrl: String` in BeerExperience model
+- **feat**: Add Coil (io.coil-kt:coil-compose:2.7.0) for async image loading
+- **feat**: 6 real brewery/taproom photos from Unsplash CDN (no API key required)
+- **feat**: Update NearbyTaproomCard and HeroImageHeader to use AsyncImage
+- **feat**: Add INTERNET permission for remote image loading
+- **chore**: Update screenshot baselines with real images
+- Screenshots versioned under `screenshots/v0.2.0/`
 
 ### 0.1.0 (2026-07-03)
 Design system overhaul and complete UI restructure:

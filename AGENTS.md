@@ -21,6 +21,7 @@ BeerAirB is an Android app for discovering and booking craft beer experiences (A
 
 | Library | Version | Usage |
 |---------|---------|-------|
+| `io.coil-kt:coil-compose` | 2.7.0 | Image loading (Unsplash CDN) |
 | `androidx.compose.material:material-icons-extended` | BOM managed | Extended Material Icons (category icons) |
 | `androidx.core:core-ktx` | 1.19.0 | Core Kotlin extensions |
 | `androidx.lifecycle:lifecycle-runtime-ktx` | 2.11.0 | Lifecycle-aware components |

@@ -29,7 +29,7 @@ class DetailScreenScreenshotTest {
         pricePerPerson = 650.0,
         rating = 4.9,
         reviewCount = 157,
-        imageRes = 0,
+        imageUrl = "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=600&h=400&fit=crop",
         location = "Valle de Bravo, Méx",
         distanceKm = 156.0,
         dateRange = "19-21 Oct",

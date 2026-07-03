@@ -57,6 +57,7 @@ fun DetailContent(
             .verticalScroll(rememberScrollState())
     ) {
         HeroImageHeader(
+            imageUrl = experience.imageUrl,
             onBackClick = onBackClick,
             isFavorite = experience.isFavorite,
             onFavoriteToggle = onFavoriteToggle
