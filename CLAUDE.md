@@ -113,6 +113,6 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 
 ## Git Notes
 
-- Current branch: single commit history
+- Push after every commit to keep the remote in sync: `git push`
 - Commit messages should explain what changed and why
 - Keep commits focused on single logical changes

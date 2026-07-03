@@ -119,3 +119,4 @@ Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `style`, `test`
 - This file should be updated whenever dependencies, architecture, or conventions change.
 - The app targets the Mexican market — UI strings are in Spanish.
 - No CI/CD is configured yet.
+- Push after every commit to keep the remote in sync: `git push`
