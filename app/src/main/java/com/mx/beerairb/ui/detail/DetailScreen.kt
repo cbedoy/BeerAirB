@@ -23,14 +23,13 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mx.beerairb.data.model.BeerExperience
 
 @Composable
 fun DetailScreen(
     experienceId: String,
     onBackClick: () -> Unit,
-    viewModel: DetailViewModel = viewModel()
+    viewModel: DetailViewModel
 ) {
     val experience by viewModel.experience.collectAsState()
 

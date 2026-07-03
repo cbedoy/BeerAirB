@@ -2,16 +2,16 @@ package com.mx.beerairb.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.beerairb.BeerAirBApplication
 import com.mx.beerairb.data.model.BeerExperience
 import com.mx.beerairb.data.repository.BeerRepository
-import com.mx.beerairb.data.repository.MockBeerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: BeerRepository = MockBeerRepository()
+    private val repository: BeerRepository
 ) : ViewModel() {
 
     private val _experiences = MutableStateFlow<List<BeerExperience>>(emptyList())
@@ -32,9 +32,10 @@ class HomeViewModel(
 
     private fun loadExperiences() {
         viewModelScope.launch {
-            val all = repository.getAllExperiences()
-            _experiences.value = all
-            _filteredExperiences.value = all
+            repository.getAllExperiences().collect { all ->
+                _experiences.value = all
+                applyFilters()
+            }
         }
     }
 
@@ -49,10 +50,10 @@ class HomeViewModel(
     }
 
     fun onFavoriteToggle(id: String) {
-        _experiences.value = _experiences.value.map { exp ->
-            if (exp.id == id) exp.copy(isFavorite = !exp.isFavorite) else exp
+        val exp = _experiences.value.find { it.id == id } ?: return
+        viewModelScope.launch {
+            repository.toggleFavorite(id, !exp.isFavorite)
         }
-        applyFilters()
     }
 
     private fun applyFilters() {

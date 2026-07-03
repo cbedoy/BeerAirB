@@ -1,18 +1,17 @@
-package com.mx.beerairb.ui.detail
+package com.mx.beerairb.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.mx.beerairb.BeerAirBApplication
 
-class DetailViewModelFactory(
-    private val application: BeerAirBApplication,
-    private val experienceId: String
+class HomeViewModelFactory(
+    private val application: BeerAirBApplication
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return DetailViewModel(
-            experienceId = experienceId,
+        return HomeViewModel(
             repository = application.repository
         ) as T
     }

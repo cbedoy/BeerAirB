@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.beerairb.data.model.BeerExperience
 import com.mx.beerairb.data.repository.BeerRepository
-import com.mx.beerairb.data.repository.MockBeerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val experienceId: String = "",
-    private val repository: BeerRepository = MockBeerRepository()
+    private val experienceId: String,
+    private val repository: BeerRepository
 ) : ViewModel() {
 
     private val _experience = MutableStateFlow<BeerExperience?>(null)
@@ -24,13 +23,16 @@ class DetailViewModel(
 
     private fun loadExperience() {
         viewModelScope.launch {
-            _experience.value = repository.getExperienceById(experienceId)
+            repository.getExperienceById(experienceId).collect { exp ->
+                _experience.value = exp
+            }
         }
     }
 
     fun toggleFavorite(id: String) {
-        _experience.value = _experience.value?.let { exp ->
-            if (exp.id == id) exp.copy(isFavorite = !exp.isFavorite) else exp
+        val exp = _experience.value ?: return
+        viewModelScope.launch {
+            repository.toggleFavorite(id, !exp.isFavorite)
         }
     }
 }
