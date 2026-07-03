@@ -34,21 +34,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.mx.beerairb.data.model.BeerExperience
 import com.mx.beerairb.ui.theme.AmberPrimary
 import com.mx.beerairb.ui.theme.ClayGray
-import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapEventsReceiver
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.MapEventsOverlay
-import org.osmdroid.views.overlay.Marker
-
-private const val DEFAULT_LAT = 21.8460
-private const val DEFAULT_LNG = -102.3044
 
 @Composable
 fun BreweryMapScreen(
@@ -59,7 +57,6 @@ fun BreweryMapScreen(
     val context = LocalContext.current
     var searchQuery by remember { mutableStateOf("") }
     var hasLocationPermission by remember { mutableStateOf(false) }
-    var mapViewRef by remember { mutableStateOf<MapView?>(null) }
 
     val filteredExperiences = remember(searchQuery, experiences) {
         if (searchQuery.isBlank()) experiences
@@ -70,29 +67,25 @@ fun BreweryMapScreen(
         }
     }
 
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(
+            LatLng(21.8460, -102.3044), 13.0f
+        )
+    }
+
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         hasLocationPermission = permissions.values.all { it }
-        mapViewRef?.let { mv ->
-            mv.controller.setZoom(14.0)
-            mv.controller.setCenter(GeoPoint(DEFAULT_LAT, DEFAULT_LNG))
-            mv.invalidate()
-        }
     }
 
     LaunchedEffect(Unit) {
-        Configuration.getInstance().apply {
-            userAgentValue = context.packageName
-        }
         hasLocationPermission = ContextCompat.checkSelfPermission(
             context, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,113 +93,68 @@ fun BreweryMapScreen(
             contentAlignment = Alignment.CenterStart
         ) {
             IconButton(onClick = onBackClick) {
-                Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Regresar"
-                )
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
             }
         }
 
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
             placeholder = { Text("Buscar cervecerías, taprooms...") },
             singleLine = true,
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AmberPrimary,
-                cursorColor = AmberPrimary
+                focusedBorderColor = AmberPrimary, cursorColor = AmberPrimary
             )
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp))
 
         if (!hasLocationPermission) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier = Modifier.fillMaxWidth().weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                Column(
-                    modifier = Modifier.padding(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "\uD83D\uDCCD",
-                        style = MaterialTheme.typography.displayLarge
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "Activa tu ubicación",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Para mostrarte las cervecerías y taprooms cerca de ti",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = ClayGray,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
+                Column(Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("\uD83D\uDCCD", style = MaterialTheme.typography.displayLarge)
+                    Spacer(Modifier.height(16.dp))
+                    Text("Activa tu ubicación", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Para mostrarte las cervecerías y taprooms cerca de ti", style = MaterialTheme.typography.bodyMedium, color = ClayGray, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(24.dp))
                     Button(
-                        onClick = {
-                            permissionLauncher.launch(
-                                arrayOf(
-                                    Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION
-                                )
-                            )
-                        },
+                        onClick = { permissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) },
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = AmberPrimary)
-                    ) {
-                        Text(
-                            text = "Activar ubicación",
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    ) { Text("Activar ubicación", fontWeight = FontWeight.SemiBold) }
                 }
             }
         } else {
-            AndroidView(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-                factory = { ctx ->
-                    MapView(ctx).apply {
-                        setTileSource(TileSourceFactory.MAPNIK)
-                        setMultiTouchControls(true)
-                        controller.setZoom(14.0)
-                        controller.setCenter(GeoPoint(DEFAULT_LAT, DEFAULT_LNG))
-                        setBuiltInZoomControls(false)
-                        mapViewRef = this
-                    }
-                },
-                update = { mapView ->
-                    mapView.overlays.removeAll { it is Marker || it is MapEventsOverlay }
-                    filteredExperiences.forEach { exp ->
-                        val marker = Marker(mapView).apply {
-                            position = GeoPoint(exp.latitude, exp.longitude)
-                            title = exp.title
-                            snippet = "${exp.category} · ${exp.location}"
-                            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                        }
-                        marker.setOnMarkerClickListener { _, _ ->
+            GoogleMap(
+                modifier = Modifier.fillMaxSize().weight(1f),
+                cameraPositionState = cameraPositionState,
+                uiSettings = MapUiSettings(
+                    zoomControlsEnabled = false,
+                    myLocationButtonEnabled = true
+                ),
+                properties = MapProperties(
+                    isMyLocationEnabled = true
+                )
+            ) {
+                filteredExperiences.forEach { exp ->
+                    val point = LatLng(exp.latitude, exp.longitude)
+                    Marker(
+                        state = MarkerState(position = point),
+                        title = exp.title,
+                        snippet = "${exp.category} · ${exp.location}",
+                        onClick = {
                             onExperienceClick(exp.id)
-                            true
+                            false
                         }
-                        mapView.overlays.add(marker)
-                    }
-                    mapView.invalidate()
+                    )
                 }
-            )
+            }
         }
     }
 }
