@@ -12,6 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mx.beerairb.ui.chat.ChatDetailScreen
 import com.mx.beerairb.ui.detail.DetailScreen
 import com.mx.beerairb.ui.detail.DetailViewModel
 import com.mx.beerairb.ui.detail.DetailViewModelFactory
@@ -34,7 +35,11 @@ fun NavGraph(navController: NavHostController) {
             FavoritesScreen()
         }
         composable(Screen.Messages.route) {
-            MessagesScreen()
+            MessagesScreen(
+                onChatClick = { chatId ->
+                    navController.navigate(Screen.ChatDetail.createRoute(chatId))
+                }
+            )
         }
         composable(Screen.Profile.route) {
             ProfileScreen()
@@ -65,6 +70,30 @@ fun NavGraph(navController: NavHostController) {
                 experienceId = id,
                 onBackClick = { navController.popBackStack() },
                 viewModel = viewModel
+            )
+        }
+        composable(
+            route = Screen.ChatDetail.route,
+            arguments = listOf(
+                navArgument("chatId") { type = NavType.StringType }
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it / 3 },
+                    animationSpec = tween(200)
+                ) + fadeOut(animationSpec = tween(200))
+            }
+        ) { backStackEntry ->
+            val chatId = backStackEntry.arguments?.getString("chatId") ?: return@composable
+            ChatDetailScreen(
+                chatId = chatId,
+                onBackClick = { navController.popBackStack() }
             )
         }
     }
