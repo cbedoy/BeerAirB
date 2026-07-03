@@ -120,5 +120,12 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 ## Git Notes
 
 - Push after every commit to keep the remote in sync: `git push`
+- Tags must also be pushed separately: `git push --tags`
 - Commit messages should explain what changed and why
 - Keep commits focused on single logical changes
+- Tag releases following semantic versioning:
+  - `feat` → minor bump (`0.1.0` → `0.2.0`)
+  - `fix` → patch bump (`0.1.0` → `0.1.1`)
+  - `docs`/`chore`/`style` → patch bump
+  - Breaking changes → major bump (`0.x.y` → `1.0.0`)
+- Format: `git tag -a "v<version>" -m "v<version> — <description>" && git push --tags`

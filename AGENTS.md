@@ -121,9 +121,27 @@ Format:
 
 Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `style`, `test`
 
+### Versioning & Tagging
+
+Tags follow semantic versioning (`v<major>.<minor>.<patch>`). For pre-1.0 (`0.x.y`):
+
+| Change type | Bump | Example |
+|-------------|------|---------|
+| `feat` (new feature) | minor | `0.1.0` → `0.2.0` |
+| `fix` (bug fix) | patch | `0.1.0` → `0.1.1` |
+| `docs` / `chore` / `style` (non-functional) | patch | `0.1.1` → `0.1.2` |
+| Breaking change | major | `0.x.y` → `1.0.0` |
+
+After each significant milestone or feature set:
+```bash
+git tag -a "v<version>" -m "v<version> — <description>"
+git push --tags
+```
+
 ## Workflow Notes
 
 - This file should be updated whenever dependencies, architecture, or conventions change.
 - The app targets the Mexican market — UI strings are in Spanish.
 - No CI/CD is configured yet.
 - Push after every commit to keep the remote in sync: `git push`
+- Tags must also be pushed separately: `git push --tags`
