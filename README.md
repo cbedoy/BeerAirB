@@ -1,6 +1,14 @@
 # BeerAirB 🍺
 
+**Version 0.0.1**
+
 Discover and book craft beer experiences in Mexico City. An Airbnb-style marketplace for beer lovers.
+
+## Screenshots
+
+| Home Card | Detail Content |
+|-----------|----------------|
+| ![Home Card](screenshots/home-card.png) | ![Detail Content](screenshots/detail-content.png) |
 
 ## Features
 
@@ -18,6 +26,7 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 | Architecture | MVVM + Repository |
 | Navigation | Navigation Compose 2.9.0 |
 | State Management | StateFlow + collectAsState() |
+| Screenshot Testing | Roborazzi + Robolectric |
 | DI | Manual constructor injection |
 | Min SDK | 24 |
 | Target SDK | 37 |
@@ -29,8 +38,14 @@ Discover and book craft beer experiences in Mexico City. An Airbnb-style marketp
 # Build debug APK
 ./gradlew assembleDebug
 
-# Run unit tests
+# Run all unit tests (including screenshot tests)
 ./gradlew test
+
+# Record screenshot baselines
+./gradlew recordRoborazziDebug
+
+# Verify screenshots against baselines
+./gradlew verifyRoborazziDebug
 
 # Run instrumented tests
 ./gradlew connectedAndroidTest
@@ -53,6 +68,21 @@ com.mx.beerairb/
     ├── navigation/              # NavGraph + routes
     └── theme/                   # Colors, typography, theme
 ```
+
+## Changelog
+
+### 0.0.1 (2026-07-03)
+
+Initial release. Core MVP with:
+
+- **feat**: BeerExperience model + repository layer
+- **feat**: Navigation graph with sealed class routes (Home, Detail)
+- **feat**: Home screen with search bar and experience list
+- **feat**: Detail screen with experience info and booking CTA
+- **feat**: MainActivity wiring with NavGraph, theme assets, and vector drawables
+- **chore**: Build config updated to compileSdk 37 with navigation dependencies
+- **docs**: AGENTS.md, CLAUDE.md, and README.md with full project documentation
+- **test**: Roborazzi screenshot tests for home card and detail content
 
 ## Target Market
 

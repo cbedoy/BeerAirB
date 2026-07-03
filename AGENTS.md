@@ -32,12 +32,16 @@ BeerAirB is an Android app for discovering and booking craft beer experiences (A
 | `androidx.compose.ui:ui-tooling-preview` | BOM managed | Preview support |
 | `androidx.compose.ui:ui-tooling` (debug) | BOM managed | Layout inspector |
 | `androidx.compose.ui:ui-test-manifest` (debug) | BOM managed | Test manifest |
-| `androidx.compose.ui:ui-test-junit4` (androidTest) | BOM managed | UI testing |
+| `androidx.compose.ui:ui-test-junit4` (test + androidTest) | BOM managed | UI testing |
 | `androidx.navigation:navigation-compose` | 2.9.0 | Compose Navigation |
 | `androidx.lifecycle:lifecycle-viewmodel-compose` | 2.11.0 | ViewModel in Compose |
 | `junit:junit` | 4.13.2 | Unit testing (test) |
-| `androidx.test.ext:junit` | 1.3.0 | AndroidX JUnit (androidTest) |
+| `androidx.test.ext:junit` | 1.3.0 | AndroidX JUnit (test + androidTest) |
 | `androidx.test.espresso:espresso-core` | 3.7.0 | UI testing (androidTest) |
+| `io.github.takahirom.roborazzi:roborazzi` | 1.64.0 | Screenshot testing |
+| `io.github.takahirom.roborazzi:roborazzi-compose` | 1.64.0 | Compose screenshot testing |
+| `io.github.takahirom.roborazzi:roborazzi-junit-rule` | 1.64.0 | Roborazzi JUnit rule |
+| `org.robolectric:robolectric` | 4.16.1 | Android framework mocking |
 
 ### Plugins
 
@@ -45,6 +49,7 @@ BeerAirB is an Android app for discovering and booking craft beer experiences (A
 |--------|---------|----|
 | Android Application | 9.1.1 | `com.android.application` |
 | Kotlin Compose Compiler | 2.2.10 | `org.jetbrains.kotlin.plugin.compose` |
+| Roborazzi | 1.64.0 | `io.github.takahirom.roborazzi` |
 
 ## Architecture
 
@@ -96,9 +101,11 @@ com.mx.beerairb/
 ## Build & Run
 
 ```bash
-./gradlew assembleDebug        # Build debug APK
-./gradlew test                 # Run unit tests
-./gradlew connectedAndroidTest # Run instrumented tests
+./gradlew assembleDebug            # Build debug APK
+./gradlew test                     # Run all unit tests (including screenshot)
+./gradlew recordRoborazziDebug     # Record screenshot baselines
+./gradlew verifyRoborazziDebug     # Verify screenshots against baselines
+./gradlew connectedAndroidTest     # Run instrumented tests
 ```
 
 ## Commit Convention

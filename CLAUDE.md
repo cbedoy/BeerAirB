@@ -63,9 +63,15 @@ BeerAirB is a single-activity Android application built entirely with Jetpack Co
 - Use `key` parameter in `items()` for stable recomposition
 
 ### Testing
-- Unit tests in `src/test/` (JUnit 4)
+- Unit tests in `src/test/` (JUnit 4 + Robolectric)
 - Instrumented tests in `src/androidTest/` (AndroidX Test + Espresso + Compose Test)
-- `ExampleUnitTest.kt` and `ExampleInstrumentedTest.kt` exist as placeholders
+- Screenshot tests in `src/test/java/.../screenshot/` using Roborazzi + Robolectric
+  - `HomeScreenScreenshotTest` — captures `ExperienceCard` composable
+  - `DetailScreenScreenshotTest` — captures detail content layout
+- Record baselines: `./gradlew recordRoborazziDebug`
+- Verify against baselines: `./gradlew verifyRoborazziDebug`
+- Screenshots are stored in `build/outputs/roborazzi/` and copied to `screenshots/` for README
+- `@GraphicsMode(GraphicsMode.Mode.NATIVE)` and `@Config(sdk = [34])` required on test classes
 
 ## Resources
 - Drawables: `ic_beer_1` through `ic_beer_6` in `res/drawable/`
