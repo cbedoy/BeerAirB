@@ -7,6 +7,9 @@ plugins {
 
 android {
     namespace = "com.mx.beerairb"
+    buildFeatures {
+        buildConfig = true
+    }
     compileSdk {
         version = release(37) {
             minorApiLevel = 1
@@ -21,6 +24,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val mapsApiKey: String = project.findProperty("MAPBOX_TOKEN") as? String ?: ""
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {
